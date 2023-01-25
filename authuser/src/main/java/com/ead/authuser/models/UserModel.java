@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL) //a nível de classe, ao serializar em JSON, ocultará atributos nulos
 @Entity
 @Table(name = "TB_USERS")
-public class UserModel implements Serializable { //Serializable converte numa sequencia de bytes para salvar no BD
+public class UserModel extends RepresentationModel<UserModel> implements Serializable { //Serializable converte numa sequencia de bytes para salvar no BD
 
     private static final long serialVersionUID = 1L; //id para a JVM vincular com a classe e controlar o versionamento no BD
 
