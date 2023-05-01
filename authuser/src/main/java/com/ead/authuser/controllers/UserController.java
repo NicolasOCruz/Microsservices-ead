@@ -36,12 +36,6 @@ public class UserController {
     public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
                                                        @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC)
                                                        Pageable pageable) {
-        Thread thread = new Thread(() -> {
-           for (int i = 0; i < 5000000; i++){
-               System.out.println(i);
-           }
-        });
-        thread.start();
         Page<UserModel> userModelPage = userService.findAll(pageable, spec);
         if (!userModelPage.isEmpty()) {
             for (UserModel userModel : userModelPage.toList()) {
