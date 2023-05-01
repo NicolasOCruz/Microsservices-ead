@@ -5,6 +5,7 @@ import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
 import com.ead.authuser.specifications.SpecificationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import java.util.UUID;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Log4j2
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/users")
@@ -68,6 +70,7 @@ public class UserController {
     public ResponseEntity<Object> updateUser(@PathVariable(value = "userId") UUID userId,
                                              @RequestBody @Validated(UserDTO.UserView.UserPut.class)
                                              @JsonView(UserDTO.UserView.UserPut.class) UserDTO userDTO) {
+        log.debug("PUT updateUser userDto received {} ", userDTO.toString());
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if (userModelOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
@@ -76,6 +79,8 @@ public class UserController {
         userModel.setFullName(userDTO.getFullName());
         userModel.setPhoneNumber(userDTO.getPhoneNumber());
         userService.save(userModel);
+        log.debug("PUT updateUser userModel userId {} ", userModel.getUserId());
+        log.info("User updated successfully userId {} ", userModel.getUserId());
         return ResponseEntity.status(HttpStatus.OK).body(userModel);
     }
 
